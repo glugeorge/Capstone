@@ -1,4 +1,4 @@
-from common_functions import *
+from common_functions import * # don't need this if init in main/experiments
 from global_variables import *
 
 def set_sample_rate(device,channel,rate):
