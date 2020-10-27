@@ -1,7 +1,10 @@
 from import_libraries import *
 
-def init_device(device_name):
+def init_devices(device_names): # Takes in array of devices
     rm = pyvisa.ResourceManager()
-    device = rm.open_resource(device_name)
-    device.read_termination = '\n'
-    return device
+    devices = []
+    for device_name in device_names:
+        device = rm.open_resource(device_name)
+        device.read_termination = '\n'
+        devices.append(device)
+    return devices
