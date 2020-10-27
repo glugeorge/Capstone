@@ -11,7 +11,7 @@ def take_measurement(device,channel,rate,count):
     set_sample_rate(device,channel,rate)
     set_sample_count(device,channel,count)
     device.write("INITiate3 (@{})".format(channel))
-    device.timeout = int(count)/int(rate)
+    #device.timeout = int(count)/int(rate)
 # May need to do some conversion of sorts from their rate format to integer
     data = device.query("FETCh3? (@{})".format(channel))
     return data

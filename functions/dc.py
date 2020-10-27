@@ -8,8 +8,8 @@ def channel_on_off(device,channel,state):
 def set_voltage_level(device,channel,voltage):
     device.write("VOLT {}, (@{})".format(voltage,channel))
 
-def set_current_level(device,channel,current)
-    dc_ps.write("CURR {},(@{})".format(current,channel))
+def set_current_level(device,channel,current):
+    device.write("CURR {},(@{})".format(current,channel))
 
 ## Below is test code ##
 if __name__ == "__main__":
