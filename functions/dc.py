@@ -9,7 +9,7 @@ def set_voltage_level(device,channel,voltage):
     device.write("VOLT {}, (@{})".format(voltage,channel))
 
 def set_current_level(device,channel,current):
-    device.write("CURR {},(@{})".format(current,channel))
+    dc_ps.write("CURR {},(@{})".format(current,channel))
 
 ## Below is test code ##
 if __name__ == "__main__":
