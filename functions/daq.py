@@ -7,7 +7,7 @@ def set_sample_rate(device,channel,rate):
 def set_sample_count(device,channel,count):
     device.write("SAMPle3:COUNt {},(@{})".format(count,channel))
 
-def take_measurement(device,channel,rate,count):
+def take_measurement(device,channel,rate=1.562E3,count=512):
     set_sample_rate(device,channel,rate)
     set_sample_count(device,channel,count)
     device.write("INITiate3 (@{})".format(channel))
