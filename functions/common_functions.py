@@ -10,7 +10,7 @@ def init_devices(device_names): # Takes in array of devices
     return devices
 
 def initiate_file():
-    filename = input("file name: ")
+    filename = input("file name (include extension): ")
     title = input("title: ")
     x_axis = input("x-axis title: ")
     y_axis = input("y-axis title: ")
