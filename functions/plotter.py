@@ -30,6 +30,9 @@ def live_plot(refresh_rate=1000, data_file, scroll=False): #default is 1 sample 
             x_plot, y_plot = x,y
         ax.clear()
         ax.plot(x_plot,y_plot)
+        plt.title(title)
+        plt.xlabel(x_axis)
+        plt.ylabel(y_axis)
     
     ani = animation.FuncAnimation(fig, animate, interval=refresh_rate)
     plt.show()
