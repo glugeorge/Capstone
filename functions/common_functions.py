@@ -8,3 +8,19 @@ def init_devices(device_names): # Takes in array of devices
         device.read_termination = '\n'
         devices.append(device)
     return devices
+
+def initiate_file():
+    filename = input("file name: ")
+    title = input("title: ")
+    x_axis = input("x-axis title: ")
+    y_axis = input("y-axis title: ")
+    f = open(filename, "a")
+    text = title + "\n" + x_axis "," + y_axis
+    f.write(text)
+    f.close()
+
+def save_to_file(filename, x, y):
+    f = open(filename, "a")
+    text = str(x) + "," + str(y) + "\n"
+    f.write(text)
+    f.close()
