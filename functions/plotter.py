@@ -21,8 +21,8 @@ def live_plot(data_file, scroll=True ,refresh_rate=1000): #default is 1 sample p
         lines = f.readlines()
         if len(lines) > len(x)+2:
             for line in lines[len(x)+2:]:
-                x.append(line.split(",")[0])
-                y.append(line.split(",")[1])
+                x.append(float(line.split(",")[0]))
+                y.append(float(line.split(",")[1]))
     
         if scroll and len(x)> 20: # Arbitrary window length, tbd
             x_plot, y_plot = x[-20:], y[-20:]
