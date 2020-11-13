@@ -18,9 +18,11 @@ def initiate_file():
     text = title + "\n" + x_axis + "," + y_axis + "\n"
     f.write(text)
     f.close()
+    return filename
 
 def save_to_file(filename, x, y):
     f = open(filename, "a")
     text = str(x) + "," + str(y) + "\n"
     f.write(text)
     f.close()
+    return filename
