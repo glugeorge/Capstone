@@ -15,7 +15,7 @@ def initiate_file():
     x_axis = input("x-axis title: ")
     y_axis = input("y-axis title: ")
     f = open(filename, "a")
-    text = title + "\n" + x_axis "," + y_axis + "\n"
+    text = title + "\n" + x_axis + "," + y_axis + "\n"
     f.write(text)
     f.close()
 
