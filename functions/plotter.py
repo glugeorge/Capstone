@@ -2,7 +2,7 @@ from common_functions import *
 from global_variables import *
 
 # Takes in live data (from file), plots it
-def live_plot(data_file, scroll=True ,refresh_rate=1000): #default is 1 sample per second
+def live_plot(data_file, scroll=True, refresh_rate=1000): #default is 1 sample per second
     # Create figure for plotting
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
@@ -38,4 +38,4 @@ def live_plot(data_file, scroll=True ,refresh_rate=1000): #default is 1 sample p
     plt.show()
 
 if __name__ == "__main__":
-    live_plot('test.txt')
+    live_plot('test.txt', scroll=False, refresh_rate=100)
