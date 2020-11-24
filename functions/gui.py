@@ -18,7 +18,7 @@ label2 = tk.Label(r,text="Type of plot")
 label2.pack()
 variable2 = tk.StringVar(r)
 variable2.set("random") # default value
-entry2 = tk.OptionMenu(r, variable2, "random", "breaks")
+entry2 = tk.OptionMenu(r, variable2, "random", "random_vs_time", "breaks")
 entry2.pack()
 
 button2 = tk.Button(r, text='Live Plot', width=25, command=plot)
