@@ -4,3 +4,4 @@ from matplotlib import style
 import pyvisa
 import numpy as np
 import time
+import random # test parameter - erase later
