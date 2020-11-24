@@ -9,11 +9,7 @@ def init_devices(device_names): # Takes in array of devices
         devices.append(device)
     return devices
 
-def initiate_file():
-    filename = input("file name (include extension): ")
-    title = input("title: ")
-    x_axis = input("x-axis title: ")
-    y_axis = input("y-axis title: ")
+def initiate_file(filename, title="y(x)", x_axis="x", y_axis="y"):
     f = open(filename, "w")
     text = title + "\n" + x_axis + "," + y_axis + "\n"
     f.write(text)
