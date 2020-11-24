@@ -1,14 +1,15 @@
 from common_functions import *
 from global_variables import *
+import daq, dc
 
-
-def take_measurement(type, t_0):
+def take_measurement(type, t_0, device, channel):
     if type == "random":
         return random.random(), random.random()
     if type == "random_vs_time":
         t = time.time() - t_0
-        y = random.random()
-        return t, y
+        volt_ascii = daq.take_measurement(device, channel)
+        voltage = np.mean([float(s) for s in volt_ascii.split(',')])
+        return t, voltage
 
 def choose_titles(type):
     if type == "random":
@@ -18,6 +19,16 @@ def choose_titles(type):
 
 # Takes in live data (from file), plots it
 def live_plot(filename, type, scroll=True, refresh_rate=1000): #default is 1 sample per second
+    
+    dc_ps_dev, daq_dev, dmm_dev = init_devices(['USB0::0x2A8D::0x1002::MY59001637::INSTR', 
+                                      'USB0::0x2A8D::0x5101::MY58002845::0::INSTR',
+                                      'USB0::0x2A8D::0x1301::MY59033786::INSTR'])
+    
+    dc.set_voltage_level(dc_ps_dev, 1, 1)
+    dc.set_current_level(dc_ps_dev, 1, 0.2)
+    daq.initialize_device(daq_dev, 102, rate=800E3, voltage=18)
+
+
     chart_title, chart_x, chart_y = choose_titles(type)
     data_file = initiate_file(filename, chart_title, chart_x, chart_y)
     absolute_time = time.time()
@@ -34,11 +45,12 @@ def live_plot(filename, type, scroll=True, refresh_rate=1000): #default is 1 sam
 
     # animate function
     def animate(i):
-        item1, item2 = take_measurement(type, absolute_time)
+        item1, item2 = take_measurement(type, absolute_time, daq_dev, 104)
         save_to_file(data_file, item1, item2)
         # Parse data file for x and y
         f = open(data_file, "r")
         lines = f.readlines()
+        f.close()
         if len(lines) > len(x)+2:
             for line in lines[len(x)+2:]:
                 x.append(float(line.split(",")[0]))
@@ -58,4 +70,4 @@ def live_plot(filename, type, scroll=True, refresh_rate=1000): #default is 1 sam
     plt.show()
 
 if __name__ == "__main__":
-    live_plot("test.txt","random",scroll=True, refresh_rate=1000)
+    live_plot("test.txt","random_vs_time",scroll=False, refresh_rate=100)

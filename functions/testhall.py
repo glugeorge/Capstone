@@ -6,7 +6,7 @@ def take_measurement(dc_ps_dev, daq_dev, dmm_dev):
     dc.channel_on_off(dc_ps_dev, 1, 1)
     time.sleep(1)
     
-    #dmm_dev.query("SYST:ERR?")
+    #daq_dev.query("SYST:ERR?")
     daq.initialize_device(daq_dev, 102, voltage=18)
     multimeter.initialize_device(dmm_dev, 0.01)
     
@@ -21,15 +21,15 @@ def take_measurement(dc_ps_dev, daq_dev, dmm_dev):
     return voltage, current
 
 
-def live_daq(daq_dev):
-    daq.live_acquisition(daq_dev, 102, rate=200E3, voltage=3)
+def live_daq(daq_dev, channel):
+    daq.live_acquisition(daq_dev, channel, count=1, rate=200E3, voltage=3)
 
 def live_dmm():
     pass
 
 def live_twochannel(daq_dev, dmm_dev):
     filename = initiate_file()
-    daq.initialize_device(daq_dev, 102, rate=800E3, voltage=18)
+    daq.initialize_device(daq_dev, 102, count=1, rate=800E3, voltage=18)
     multimeter.initialize_device(dmm_dev, 0.01)
     while True:
         volt_ascii = daq.take_measurement(daq_dev, 102)
@@ -37,6 +37,17 @@ def live_twochannel(daq_dev, dmm_dev):
         voltage = np.mean([float(s) for s in volt_ascii.split(',')])
         save_to_file(filename, current, voltage)
         time.sleep(0.05)
+
+def live_twochannel_daq(daq_dev):
+    filename = initiate_file()
+    daq.initialize_device(daq_dev, "102,101", count=1, rate=800E3, voltage=18)
+    while True:
+        volt_ascii1, volt_ascii2 = daq.take_measurement(daq_dev, "102,101")
+        voltage1 = np.mean([float(s) for s in volt_ascii1.split(',')])
+        voltage2 = np.mean([float(s) for s in volt_ascii2.split(',')])
+        save_to_file(filename, voltage1, voltage2)
+        time.sleep(0.05)
+    
 
 if __name__ == "__main__":
     dc_ps_dev, daq_dev, dmm_dev = init_devices(['USB0::0x2A8D::0x1002::MY59001637::INSTR', 
@@ -47,10 +58,13 @@ if __name__ == "__main__":
     dc.set_current_level(dc_ps_dev, 1, 0.2)
     
     # # Live acquisition of DAQ
-    # live_daq(daq_dev)
+    live_daq(daq_dev, 102)
     
     # Live acquisition of DAQ + DMM
-    live_twochannel(daq_dev, dmm_dev)
+    # live_twochannel(daq_dev, dmm_dev)
+    
+    # Live acquisition of 2 channels of DAQ
+    # live_twochannel_daq(daq_dev)
     
     # # V12I34, V13I42, etc.
     # measurements = {}

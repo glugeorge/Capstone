@@ -1,26 +1,30 @@
 from common_functions import * # don't need this if init in main/experiments
 from global_variables import *
 
-def set_sample_rate(device,channel,rate):
-    device.write("SAMPle3:RATE {},(@{})".format(rate,channel))
+def set_sample_rate(device, channel, rate):
+    device.write("SAMPle3:RATE {},(@{})".format(rate, channel))
 
-def set_sample_count(device,channel,count):
-    device.write("SAMPle3:COUNt {},(@{})".format(count,channel))
+def set_sample_count(device, channel, count):
+    device.write("SAMPle3:COUNt {},(@{})".format(count, channel))
 
-def initialize_device(device, channel, rate=1.562E3,count=512,voltage=3):
+def initialize_device(device, channel, rate=1.562E3, count=512, voltage=3):
      device.write(f"ACQ3:VOLT {voltage},DEF,DEF,DEF,{count},{rate},(@{channel})")
      device.timeout = 20000
 
-def take_measurement(device,channel,rate=1.562E3,count=512):
+def take_measurement(device, channel):
     #set_sample_rate(device,channel,rate)
     #set_sample_count(device,channel,count)
     #device.timeout = 20000
     device.write("INITiate3 (@{})".format(channel))
-    data = device.query("FETCh3? (@{})".format(channel))
-    return data
+    channels = str(channel).split(',')
+    datalist = []
+    for c in channels:
+        datalist.append(device.query("FETCh3? (@{})".format(c)))
+    
+    return datalist[0] if len(datalist) == 1 else datalist
 
-def live_acquisition(device,channel,rate=1.562E3,count=512,voltage=3):
-    filename = initiate_file()
+def live_acquisition(device, channel, rate=1.562E3, count=512, voltage=3):
+    filename = initiate_file('test.txt')
     initialize_device(device, channel, rate, count, voltage)
     start = time.time()
     while True:
