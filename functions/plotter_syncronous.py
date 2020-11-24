@@ -2,18 +2,25 @@ from common_functions import *
 from global_variables import *
 
 
-def take_measurement(type):
+def take_measurement(type, t_0):
     if type == "random":
-        return random.random(), random.random()        
+        return random.random(), random.random()
+    if type == "random_vs_time":
+        t = time.time() - t_0
+        y = random.random()
+        return t, y
 
 def choose_titles(type):
     if type == "random":
         return "random values", "random x", "random y"
+    if type == "random_vs_time":
+        return "random values vs time", "time", "random y"
 
 # Takes in live data (from file), plots it
 def live_plot(filename, type, scroll=True, refresh_rate=1000): #default is 1 sample per second
     chart_title, chart_x, chart_y = choose_titles(type)
     data_file = initiate_file(filename, chart_title, chart_x, chart_y)
+    absolute_time = time.time()
     # Create figure for plotting
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
@@ -27,7 +34,7 @@ def live_plot(filename, type, scroll=True, refresh_rate=1000): #default is 1 sam
 
     # animate function
     def animate(i):
-        item1, item2 = take_measurement(type)
+        item1, item2 = take_measurement(type, absolute_time)
         save_to_file(data_file, item1, item2)
         # Parse data file for x and y
         f = open(data_file, "r")
