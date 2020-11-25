@@ -20,5 +20,6 @@ def save_to_file(filename, x, y):
     f = open(filename, "a")
     text = str(x) + "," + str(y) + "\n"
     f.write(text)
-    f.close()
+    # No need to close until possibly the end, slows down code
+    #f.close()
     return filename
