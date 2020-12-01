@@ -36,7 +36,7 @@ def setup(filename, x_value, y_value):
         "voltage": daq_dev,
         "current": dmm_dev
         }
-    return data_file, dc_ps_dev, device_dict[x_value], device_dict[y_value] 
+    return data_file, dc_ps_dev, device_dict[x_value], device_dict[y_value]
 
 # Takes in live data (from file), plots it
 def live_plot(filename, x_value, y_value, scroll=True, refresh_rate=1000): #default is 1 sample per second
@@ -82,7 +82,7 @@ def live_plot(filename, x_value, y_value, scroll=True, refresh_rate=1000): #defa
         plt.xlabel(x_axis)
         plt.ylabel(y_axis)
 
-    ani = animation.FuncAnimation(fig, animate, interval=refresh_rate)
+    ani = animation.FuncAnimation(fig, animate, interval=int(refresh_rate))
     plt.show()
 
 if __name__ == "__main__":
