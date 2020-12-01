@@ -36,7 +36,7 @@ entry4.pack()
 label5 = tk.Label(r,text="Refresh rate")
 label5.pack()
 variable5 = tk.StringVar(r, value='1000')
-entry5 = tk.Entry(r, textvariable=variable)
+entry5 = tk.Entry(r, textvariable=variable5)
 entry5.pack()
 
 button2 = tk.Button(r, text='Live Plot', width=25, command=plot)

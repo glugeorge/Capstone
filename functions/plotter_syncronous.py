@@ -15,6 +15,11 @@ def take_measurement(measurement, t_0, device=None, channel=None):
     if measurement == "current":
         current = multimeter.measure_current(device, 0.01)
         return current
+    if measurement == "two voltages":
+        volt_ascii1, volt_ascii2 = daq.take_measurement(device, "101,102")
+        voltage1 = np.mean([float(s) for s in volt_ascii1.split(',')])
+        voltage2 = np.mean([float(s) for s in volt_ascii2.split(',')])
+        return f"{voltage1},{voltage2}"
 
 def initiate_measurement():
     dc_ps_dev, daq_dev, dmm_dev = init_devices(['USB0::0x2A8D::0x1002::MY59001637::INSTR',
@@ -27,14 +32,15 @@ def initiate_measurement():
 
 def setup(filename, x_value, y_value):
     # Setting up chart titles
-    chart_title = "{} vs {}".format(y_value,x_value)
+    chart_title = f"{y_value} vs {x_value}"
     data_file = initiate_file(filename, chart_title, x_value, y_value)
     dc_ps_dev, daq_dev, dmm_dev = initiate_measurement()
     device_dict = {
         "random": None,
         "time": None,
         "voltage": daq_dev,
-        "current": dmm_dev
+        "current": dmm_dev,
+        "two voltages": daq_dev
         }
     return data_file, dc_ps_dev, device_dict[x_value], device_dict[y_value]
 
@@ -47,6 +53,7 @@ def live_plot(filename, x_value, y_value, scroll=True, refresh_rate=1000): #defa
     ax = fig.add_subplot(1, 1, 1)
     x = []
     y = []
+    y1 = []
     f = open(data_file, "r")
     lines = f.readlines()
     title = lines[0]
@@ -57,8 +64,11 @@ def live_plot(filename, x_value, y_value, scroll=True, refresh_rate=1000): #defa
     def animate(i):
         item1, item2 = take_measurement(x_value, absolute_time, device_1), take_measurement(y_value, absolute_time, device_2)
         save_to_file(data_file, item1, item2)
+        y_vals = str(item2).split(",")
         x.append(item1)
-        y.append(item2)
+        y.append(float(y_vals[0]))
+        if len(y_vals)>1:
+            y1.append(float(y_vals[1]))
 
         """
         # Slows down code, consider replacing with append statement above
@@ -74,10 +84,14 @@ def live_plot(filename, x_value, y_value, scroll=True, refresh_rate=1000): #defa
 
         if scroll and len(x)> 20: # Arbitrary window length, tbd
             x_plot, y_plot = x[-20:], y[-20:]
+            if len(y_vals)>1:
+                y1_plot = y1[-20:]
         else:
-            x_plot, y_plot = x,y
+            x_plot, y_plot, y1_plot = x,y,y1
         ax.clear()
         ax.plot(x_plot,y_plot)
+        if len(y_vals)>1:
+            ax.plot(x_plot,y1_plot)
         plt.title(title)
         plt.xlabel(x_axis)
         plt.ylabel(y_axis)
