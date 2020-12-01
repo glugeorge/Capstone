@@ -11,7 +11,7 @@ def measure_current(device,range,ac_dc='DC',sample_count=1):
     #device.write("SAMPle:COUNt {}".format(sample_count))
     #device.timeout = 20000
     curr_ascii = device.query("READ?")
-    return curr_ascii
+    return float(curr_ascii)
 
 
 def measure_voltage(device,range,ac_dc='DC',sample_count=1):
@@ -19,4 +19,4 @@ def measure_voltage(device,range,ac_dc='DC',sample_count=1):
     device.write("SAMPle:COUNt {}".format(sample_count))
     device.timeout = 20000
     volt_ascii = device.query("READ?")
-    return volt_ascii
+    return float(volt_ascii)

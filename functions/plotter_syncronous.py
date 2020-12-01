@@ -1,43 +1,46 @@
 from common_functions import *
 from global_variables import *
-import daq, dc
+import daq, dc, multimeter
 
-def take_measurement(type, t_0, device, channel):
-    if type == "random":
-        return random.random(), random.random()
-    if type == "random_vs_time":
+def take_measurement(measurement, t_0, device=None, channel=None):
+    if measurement == "random":
+        return random.random()
+    if measurement == "time":
         t = time.time() - t_0
-        y = random.random()
-        return t, y
-    if type == "voltage_vs_time":
-        t = time.time() - t_0
-        volt_ascii = daq.take_measurement(device, channel)
+        return t
+    if measurement == "voltage":
+        volt_ascii = daq.take_measurement(device, 101)
         voltage = np.mean([float(s) for s in volt_ascii.split(',')])
-        return t, voltage
+        return voltage
+    if measurement == "current":
+        current = multimeter.measure_current(device, 0.01)
+        return current
 
-def set_chart_titles(type):
-    if type == "random":
-        return "random values", "random x", "random y"
-    if type == "random_vs_time":
-        return "random values vs time", "time", "random y"
-    if type == "voltage_vs_time":
-        return "voltage vs time", "time", "voltage"
+def initiate_measurement():
+    dc_ps_dev, daq_dev, dmm_dev = init_devices(['USB0::0x2A8D::0x1002::MY59001637::INSTR',
+                                          'USB0::0x2A8D::0x5101::MY58002845::0::INSTR',
+                                          'USB0::0x2A8D::0x1301::MY59033786::INSTR'])
+    dc.set_voltage_level(dc_ps_dev, 1, 1)
+    dc.set_current_level(dc_ps_dev, 1, 0.2)
+    daq.initialize_device(daq_dev, 102, rate=800E3, voltage=18)
+    return dc_ps_dev, daq_dev, dmm_dev
 
-def initiate_measurement(type):
-    if type == "voltage_vs_time":
-        dc_ps_dev, daq_dev, dmm_dev = init_devices(['USB0::0x2A8D::0x1002::MY59001637::INSTR',
-                                              'USB0::0x2A8D::0x5101::MY58002845::0::INSTR',
-                                              'USB0::0x2A8D::0x1301::MY59033786::INSTR'])
-        dc.set_voltage_level(dc_ps_dev, 1, 1)
-        dc.set_current_level(dc_ps_dev, 1, 0.2)
-        daq.initialize_device(daq_dev, 102, rate=800E3, voltage=18)
-        return daq_dev
+def setup(filename, x_value, y_value):
+    # Setting up chart titles
+    chart_title = "{} vs {}".format(y_value,x_value)
+    data_file = initiate_file(filename, chart_title, x_value, y_value)
+    dc_ps_dev, daq_dev, dmm_dev = initiate_measurement()
+    device_dict = {
+        "random": None,
+        "time": None,
+        "voltage": daq_dev,
+        "current": dmm_dev
+        }
+    return data_file, dc_ps_dev, device_dict[x_value], device_dict[y_value] 
 
 # Takes in live data (from file), plots it
-def live_plot(filename, type, scroll=True, refresh_rate=1000): #default is 1 sample per second
-    daq_dev = initiate_measurement(type)
-    chart_title, chart_x, chart_y = set_chart_titles(type)
-    data_file = initiate_file(filename, chart_title, chart_x, chart_y)
+def live_plot(filename, x_value, y_value, scroll=True, refresh_rate=1000): #default is 1 sample per second
+    data_file, dc_ps_dev, device_1, device_2 = setup(filename, x_value, y_value)
     absolute_time = time.time()
     # Create figure for plotting
     fig = plt.figure()
@@ -52,7 +55,7 @@ def live_plot(filename, type, scroll=True, refresh_rate=1000): #default is 1 sam
 
     # animate function
     def animate(i):
-        item1, item2 = take_measurement(type, absolute_time, daq_dev, 104)
+        item1, item2 = take_measurement(x_value, absolute_time, device_1), take_measurement(y_value, absolute_time, device_2)
         save_to_file(data_file, item1, item2)
         x.append(item1)
         y.append(item2)
