@@ -2,14 +2,14 @@ from common_functions import *
 from global_variables import *
 import daq, dc, multimeter
 
-def take_measurement(measurement, t_0, device=None, channel=None):
+def take_measurement(measurement, t_0, device=None, channel=101):
     if measurement == "random":
         return random.random()
     if measurement == "time":
         t = time.time() - t_0
         return t
     if measurement == "voltage":
-        volt_ascii = daq.take_measurement(device, 101)
+        volt_ascii = daq.take_measurement(device, channel)
         voltage = np.mean([float(s) for s in volt_ascii.split(',')])
         return voltage
     if measurement == "current":
@@ -62,7 +62,7 @@ def live_plot(filename, x_value, y_value, scroll=True, refresh_rate=1000): #defa
 
     # animate function
     def animate(i):
-        item1, item2 = take_measurement(x_value, absolute_time, device_1), take_measurement(y_value, absolute_time, device_2)
+        item1, item2 = take_measurement(x_value, absolute_time, device_1, 102), take_measurement(y_value, absolute_time, device_2)
         save_to_file(data_file, item1, item2)
         y_vals = str(item2).split(",")
         x.append(item1)

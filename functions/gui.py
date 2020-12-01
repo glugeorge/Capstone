@@ -4,7 +4,7 @@ from import_libraries import *
 from common_functions import *
 
 def plot():
-    live_plot(entry1.get(),variable2.get(),variable3.get(),check1.get(),)
+    live_plot(entry1.get(),variable2.get(),variable3.get(),check1.get(),variable5.get())
 
 r = tk.Tk()
 r.title('Chart Recorder GUI')
@@ -21,7 +21,7 @@ variable2.set("random") # default value
 entry2 = tk.OptionMenu(r, variable2, "random", "time", "voltage", "current")
 entry2.pack()
 
-label3 = tk.Label(r,text="Y_axis")
+label3 = tk.Label(r,text="Y axis")
 label3.pack()
 variable3 = tk.StringVar(r)
 variable3.set("random") # default value
