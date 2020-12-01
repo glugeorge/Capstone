@@ -4,7 +4,7 @@ from import_libraries import *
 from common_functions import *
 
 def plot():
-    live_plot(entry1.get(),variable2.get(),variable3.get())
+    live_plot(entry1.get(),variable2.get(),variable3.get(),check1.get(),)
 
 r = tk.Tk()
 r.title('Chart Recorder GUI')
@@ -35,7 +35,8 @@ entry4 = tk.Checkbutton(r, text="Scroll", variable=check1)
 entry4.pack()
 label5 = tk.Label(r,text="Refresh rate")
 label5.pack()
-entry5 = tk.Entry(r)
+variable5 = tk.StringVar(r, value='1000')
+entry5 = tk.Entry(r, textvariable=variable)
 entry5.pack()
 
 button2 = tk.Button(r, text='Live Plot', width=25, command=plot)
