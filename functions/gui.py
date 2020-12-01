@@ -21,6 +21,16 @@ variable2.set("random") # default value
 entry2 = tk.OptionMenu(r, variable2, "random", "random_vs_time", "voltage_vs_time")
 entry2.pack()
 
+label3 = tk.Label(r,text="Plot options")
+label3.pack()
+check1 = tk.IntVar()
+entry3 = tk.Checkbutton(r, text="Scroll", variable=check1)
+entry3.pack()
+label4 = tk.Label(r,text="Refresh rate")
+label4.pack()
+entry4 = tk.Entry(r)
+entry4.pack()
+
 button2 = tk.Button(r, text='Live Plot', width=25, command=plot)
 button2.pack()
 
