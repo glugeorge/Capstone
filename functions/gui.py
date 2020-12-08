@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from plotter_syncronous import *
+from high_freq_measurement import *
 from import_libraries import *
 from common_functions import *
 
@@ -11,6 +12,7 @@ def plot():
 def high_f_measurement():
     print("Take measurement at high speed with:")
     print(entry6.get(),variable7.get(),variable8.get())
+    take_high_freq(entry6.get(),variable7.get(),variable8.get())
 
 def hall_measurement():
     resistivity_config = {"V_12I43"}
@@ -32,7 +34,7 @@ tab2 = ttk.Frame(tab_parent)
 tab3 = ttk.Frame(tab_parent)
 
 tab_parent.add(tab1, text="Chart recorder")
-tab_parent.add(tab2, text="High frequency measurement")
+tab_parent.add(tab2, text="High frequency voltage measurement")
 tab_parent.add(tab3, text="Hall effect")
 
 tab_parent.pack(expand=1, fill="both")
@@ -83,18 +85,18 @@ label6.grid(column=1, columnspan=3, sticky='S')
 entry6 = tk.Entry(tab2)
 entry6.grid(column=1, columnspan=3, row = 1)
 
-label7 = tk.Label(tab2,text="X axis", width=10)
+label7 = tk.Label(tab2,text="Rate (Hz, max = 1000)", width=10)
 label7.grid(column=1, row=2)
 variable7 = tk.StringVar(tab2)
-variable7.set("random") # default value
-entry7 = tk.OptionMenu(tab2, variable7, "random", "time", "voltage", "current")
+variable7.set(1) # default value
+entry7 = tk.Entry(tab2, textvariable=variable7, width=5)
 entry7.grid(column=1, row=3)
 
-label8 = tk.Label(tab2,text="Y axis", width=10)
+label8 = tk.Label(tab2,text="Sample Time", width=10)
 label8.grid(column=3, row=2)
 variable8 = tk.StringVar(tab2)
-variable8.set("random") # default value
-entry8 = tk.OptionMenu(tab2, variable8, "random", "time", "voltage", "current", "two voltages")
+variable8.set(1) # default value
+entry8 = tk.Entry(tab2, textvariable=variable8, width=5)
 entry8.grid(column=3, row=3)
 
 button2 = tk.Button(tab2, text='Take Measurement', height = 2, width = 20, command=high_f_measurement)
