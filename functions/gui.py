@@ -4,6 +4,7 @@ from plotter_syncronous import *
 from high_freq_measurement import *
 from import_libraries import *
 from common_functions import *
+from hall import *
 
 def plot():
     refresh_rate = 1000/float(variable5.get())
@@ -15,14 +16,11 @@ def high_f_measurement():
     take_high_freq(entry6.get(),variable7.get(),variable8.get())
 
 def hall_measurement():
-    resistivity_config = {"V_12I43"}
-    hall_config = {}
     I_p, I_n = variable10.get(), variable11.get()
     V_p, V_n = variable12.get(), variable13.get()
     B_field_on = check2.get()
     B_field_orientation = variable16.get()
-
-
+    take_hall_measurement(I_p, I_n, V_p, V_n, B_field_on, B_field_orientation, entry9.get())
 
 
 r = tk.Tk()
