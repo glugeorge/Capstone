@@ -12,10 +12,14 @@ def high_f_measurement():
     print("Take measurement at high speed with:")
     print(entry6.get(),variable7.get(),variable8.get())
 
+def hall_measurement():
+    print("do stuff with these:")
+    print(variable10.get(),variable11.get(),variable12.get(),variable13.get())
+
+
 
 r = tk.Tk()
 r.title('Chart Recorder GUI')
-r.geometry("300x240")
 
 tab_parent = ttk.Notebook(r)
 tab1 = ttk.Frame(tab_parent)
@@ -91,8 +95,54 @@ entry8.grid(column=3, row=3)
 button2 = tk.Button(tab2, text='Take Measurement', height = 2, width = 20, command=high_f_measurement)
 button2.grid(column=1, columnspan=3, rowspan=2, sticky='N')
 
+
 # Hall measurement tab
 
 
+label9 = tk.Label(tab3,text="Filename")
+label9.grid(column=1, columnspan=4, sticky='S')
+entry9 = tk.Entry(tab3)
+entry9.grid(column=1, columnspan=4, row = 1)
+
+label10 = tk.Label(tab3,text="I_p", width=5)
+label10.grid(column=1, row=2)
+variable10 = tk.StringVar(tab3)
+variable10.set("1") # default value
+entry10 = tk.OptionMenu(tab3, variable10, "1", "2", "3", "4")
+entry10.grid(column=1, row=3)
+
+label11 = tk.Label(tab3,text="I_n", width=5)
+label11.grid(column=2, row=2)
+variable11 = tk.StringVar(tab3)
+variable11.set("2") # default value
+entry11 = tk.OptionMenu(tab3, variable11, "1", "2", "3", "4")
+entry11.grid(column=2, row=3)
+
+label12 = tk.Label(tab3,text="V_p", width=5)
+label12.grid(column=3, row=2)
+variable12 = tk.StringVar(tab3)
+variable12.set("4") # default value
+entry12 = tk.OptionMenu(tab3, variable12, "1", "2", "3", "4")
+entry12.grid(column=3, row=3)
+
+label13 = tk.Label(tab3,text="V_n", width=5)
+label13.grid(column=4, row=2)
+variable13 = tk.StringVar(tab3)
+variable13.set("3") # default value
+entry13 = tk.OptionMenu(tab3, variable13, "1", "2", "3", "4")
+entry13.grid(column=4, row=3)
+
+label15 = tk.Label(tab3,text="Hall measurement options")
+label15.grid(column=1, columnspan=4, row=4)
+check2 = tk.IntVar()
+entry15 = tk.Checkbutton(tab3, text="Magnetic field", variable=check2)
+entry15.grid(column=1, columnspan=2,row=5)
+variable16 = tk.StringVar(tab3)
+variable16.set("+") # default value
+entry16 = tk.OptionMenu(tab3, variable16, "+", "-")
+entry16.grid(column=3, columnspan=2, row=5)
+
+button14 = tk.Button(tab3, text='Take Measurement', height = 2, width = 15, command=hall_measurement)
+button14.grid(column=1, columnspan=4, rowspan=2, sticky='N')
 
 r.mainloop()
