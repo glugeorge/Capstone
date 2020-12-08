@@ -83,18 +83,18 @@ label6.grid(column=1, columnspan=3, sticky='S')
 entry6 = tk.Entry(tab2)
 entry6.grid(column=1, columnspan=3, row = 1)
 
-label7 = tk.Label(tab2,text="Rate (Hz, max = 1000)", width=10)
+label7 = tk.Label(tab2,text="Rate (Hz, max = 1000)", width=20)
 label7.grid(column=1, row=2)
 variable7 = tk.StringVar(tab2)
 variable7.set(1) # default value
-entry7 = tk.Entry(tab2, textvariable=variable7, width=5)
+entry7 = tk.Entry(tab2, textvariable=variable7, width=15)
 entry7.grid(column=1, row=3)
 
-label8 = tk.Label(tab2,text="Sample Time", width=10)
+label8 = tk.Label(tab2,text="Sample Time (s)", width=20)
 label8.grid(column=3, row=2)
 variable8 = tk.StringVar(tab2)
 variable8.set(1) # default value
-entry8 = tk.Entry(tab2, textvariable=variable8, width=5)
+entry8 = tk.Entry(tab2, textvariable=variable8, width=15)
 entry8.grid(column=3, row=3)
 
 button2 = tk.Button(tab2, text='Take Measurement', height = 2, width = 20, command=high_f_measurement)
