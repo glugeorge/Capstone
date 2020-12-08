@@ -5,7 +5,7 @@ from import_libraries import *
 from common_functions import *
 
 def plot():
-    refresh_rate = 1000/variable5.get()
+    refresh_rate = 1000/float(variable5.get())
     live_plot(entry1.get(),variable2.get(),variable3.get(),check1.get(),refresh_rate)
 
 def high_f_measurement():
@@ -13,8 +13,13 @@ def high_f_measurement():
     print(entry6.get(),variable7.get(),variable8.get())
 
 def hall_measurement():
-    print("do stuff with these:")
-    print(variable10.get(),variable11.get(),variable12.get(),variable13.get())
+    resistivity_config = {"V_12I43"}
+    hall_config = {}
+    I_p, I_n = variable10.get(), variable11.get()
+    V_p, V_n = variable12.get(), variable13.get()
+    B_field_on = check2.get()
+    B_field_orientation = variable16.get()
+
 
 
 
