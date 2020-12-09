@@ -7,14 +7,14 @@ resistivity_config = {"V34I21":[], "V43I12":[], "V41I32":[], "V14I23":[],
 hall_config = {"V24+I13":[], "V42+I31":[], "V13+I42":[], "V31+I24":[],
                "V24-I13":[], "V42-I31":[], "V13-I42":[], "V31-I24":[]}
 
-        
+
 def take_hall_measurement(I_p, I_n, V_p, V_n, B_on, B_orient, filename):
 
     f = open(filename, "w")
     text = "Hall experiment measurements \nConfiguration,Voltage,Current \n"
     f.write(text)
     f.close()
-    dc_ps_dev, daq_dev, dmm_dev = init_devices(['USB0::0x2A8D::0x1002::MY59001637::INSTR', 
+    dc_ps_dev, daq_dev, dmm_dev = init_devices(['USB0::0x2A8D::0x1002::MY59001637::INSTR',
                                       'USB0::0x2A8D::0x5101::MY58002845::0::INSTR',
                                       'USB0::0x2A8D::0x1301::MY59033786::INSTR'])
     # take measurements
@@ -60,8 +60,6 @@ def take_hall_measurement(I_p, I_n, V_p, V_n, B_on, B_orient, filename):
             f.write(text)
         text = "\n"
         f.write(text)
-
-
 
     f.close()
 
