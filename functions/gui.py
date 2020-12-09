@@ -7,7 +7,7 @@ from common_functions import *
 from hall import *
 
 def plot():
-    refresh_rate = 1000/float(variable5.get())
+    refresh_rate = abs(1000/float(variable5.get()) - 95.01)
     live_plot(entry1.get(),variable2.get(),variable3.get(),check1.get(),refresh_rate)
 
 def high_f_measurement():
