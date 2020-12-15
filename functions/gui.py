@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from plotter_syncronous import *
+from plotter import *
 from high_freq_measurement import *
 from import_libraries import *
 from common_functions import *
