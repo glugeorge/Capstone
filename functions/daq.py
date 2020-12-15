@@ -1,12 +1,6 @@
 from common_functions import * # don't need this if init in main/experiments
 from global_variables import *
 
-def set_sample_rate(device, channel, rate):
-    device.write("SAMPle3:RATE {},(@{})".format(rate, channel))
-
-def set_sample_count(device, channel, count):
-    device.write("SAMPle3:COUNt {},(@{})".format(count, channel))
-
 def initialize_device(device, channel, rate=1.562E3, count=512, voltage=3):
      device.write(f"ACQ3:VOLT {voltage},DEF,DEF,DEF,{count},{rate},(@{channel})")
      device.timeout = 20000
