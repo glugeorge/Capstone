@@ -1,6 +1,7 @@
 from import_libraries import *
 from common_functions import *
 import daq, dc, multimeter
+from global_variables import *
 
 resistivity_config = {"V34I21":[], "V43I12":[], "V41I32":[], "V14I23":[],
                       "V12I43":[], "V21I34":[], "V23I14":[], "V32I41":[]}

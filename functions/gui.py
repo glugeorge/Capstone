@@ -8,19 +8,22 @@ from hall import *
 
 def plot():
     refresh_rate = abs(1000/float(refresh_rate_raw.get()) - 95.01)
-    live_plot(chart_file_name.get(),chart_x_name.get(),chart_y_name.get(),scroll_on_off.get(),refresh_rate)
+    live_plot(data_dir_name+chart_file_name.get(),chart_x_name.get(),chart_y_name.get(),scroll_on_off.get(),refresh_rate)
 
 def high_f_measurement():
-    print("Take measurement at high speed with:")
-    print(measure_file_name.get(),measure_rate.get(),measure_time.get())
-    take_high_freq(measure_file_name.get(),measure_rate.get(),measure_time.get())
+    print(f"Taking measurement at {measure_rate.get()} Hz for {measure_time.get()} seconds")
+    take_high_freq(data_dir_name+measure_file_name.get(),measure_rate.get(),measure_time.get())
+    print("Done taking high frequency voltage measurement")
+    
 
 def hall_measurement():
     I_p, I_n = pos_curr_position.get(), neg_curr_position.get()
     V_p, V_n = pos_v_position.get(), neg_v_position.get()
     B_field_on = mag_field_on_off.get()
     B_field_orientation = mag_field_polarity.get()
-    take_hall_measurement(I_p, I_n, V_p, V_n, B_field_on, B_field_orientation, hall_file_name.get())
+    print(f"Taking Hall measurement at positions:\nI_p={I_p}\nI_n={I_n}\nV_p={V_p}\nV_n={V_n}")
+    take_hall_measurement(I_p, I_n, V_p, V_n, B_field_on, B_field_orientation, data_dir_name+hall_file_name.get())
+    print("Done taking Hall measurement")
 
 
 r = tk.Tk()
@@ -39,7 +42,7 @@ tab_parent.pack(expand=1, fill="both")
 
 
 # Chart recorder tab
-chart_file_label = tk.Label(tab_chart_recorder,text="Filename")
+chart_file_label = tk.Label(tab_chart_recorder,text="Filename (include extension)")
 chart_file_label.grid(column=1, columnspan=3, sticky='S')
 chart_file_name = tk.Entry(tab_chart_recorder)
 chart_file_name.grid(column=1, columnspan=3, row = 1)
@@ -74,7 +77,7 @@ live_plot_submit.grid(column=1, columnspan=3, rowspan=2, sticky='N')
 
 
 # High frequency measurement tab
-measure_file_label = tk.Label(tab_high_freq_measure,text="Filename")
+measure_file_label = tk.Label(tab_high_freq_measure,text="Filename (include extension)")
 measure_file_label.grid(column=1, columnspan=3, sticky='S')
 measure_file_name = tk.Entry(tab_high_freq_measure)
 measure_file_name.grid(column=1, columnspan=3, row = 1)
@@ -98,7 +101,7 @@ measure_submit.grid(column=1, columnspan=3, rowspan=2, sticky='N')
 
 
 # Hall measurement tab
-hall_file_label = tk.Label(tab_hall,text="Filename")
+hall_file_label = tk.Label(tab_hall,text="Filename (include extension)")
 hall_file_label.grid(column=1, columnspan=4, sticky='S')
 hall_file_name = tk.Entry(tab_hall)
 hall_file_name.grid(column=1, columnspan=4, row = 1)
