@@ -14,9 +14,7 @@ def take_hall_measurement(I_p, I_n, V_p, V_n, B_on, B_orient, filename):
     text = "Hall experiment measurements \nConfiguration,Voltage,Current \n"
     f.write(text)
     f.close()
-    dc_ps_dev, daq_dev, dmm_dev = init_devices(['USB0::0x2A8D::0x1002::MY59001637::INSTR',
-                                      'USB0::0x2A8D::0x5101::MY58002845::0::INSTR',
-                                      'USB0::0x2A8D::0x1301::MY59033786::INSTR'])
+    dc_ps_dev, daq_dev, dmm_dev = init_devices([dc_ps_name, daq_name, dmm_name])
     # take measurements
     #voltage = random.random()
     #current = random.random()

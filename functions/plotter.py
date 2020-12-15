@@ -22,9 +22,7 @@ def take_measurement(measurement, t_0, device=None, channel=101):
         return f"{voltage1},{voltage2}"
 
 def initiate_measurement():
-    dc_ps_dev, daq_dev, dmm_dev = init_devices(['USB0::0x2A8D::0x1002::MY59001637::INSTR',
-                                          'USB0::0x2A8D::0x5101::MY58002845::0::INSTR',
-                                          'USB0::0x2A8D::0x1301::MY59033786::INSTR'])
+    dc_ps_dev, daq_dev, dmm_dev = init_devices([dc_ps_name, daq_name, dmm_name])
     dc.set_voltage_level(dc_ps_dev, 1, 1)
     dc.set_current_level(dc_ps_dev, 1, 0.2)
     daq.initialize_device(daq_dev, 102, rate=800E3, voltage=18)

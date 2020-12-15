@@ -4,7 +4,7 @@ import daq
 
 def take_high_freq(filename,user_rate,user_time,channel=101):
     initiate_file(filename,'voltage v time','time','voltage')
-    daq_dev = init_devices(['USB0::0x2A8D::0x5101::MY58002845::0::INSTR'])[0]
+    daq_dev = init_devices([daq_name])[0]
     daq.initialize_device(daq_dev, channel, count = float(user_time)*1.562E3)
     data_ascii= daq.take_measurement(daq_dev,channel)
     data_list = [float(s) for s in data_ascii.split(',')]
