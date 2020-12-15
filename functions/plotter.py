@@ -26,6 +26,7 @@ def initiate_measurement():
     dc.set_voltage_level(dc_ps_dev, 1, 1)
     dc.set_current_level(dc_ps_dev, 1, 0.2)
     daq.initialize_device(daq_dev, 102, rate=800E3, voltage=18)
+    multimeter.initialize_device(dmm_dev,0.01)
     return dc_ps_dev, daq_dev, dmm_dev
 
 def setup(filename, x_value, y_value):
