@@ -6,6 +6,8 @@ from import_libraries import *
 from common_functions import *
 from hall import *
 
+### FUNCTIONS ###
+# When adding new functionality, add the function callers here
 def plot():
     refresh_rate = abs(1000/float(refresh_rate_raw.get()) - 95.01)
     live_plot(data_dir_name+chart_file_name.get(),chart_x_name.get(),chart_y_name.get(),scroll_on_off.get(),refresh_rate)
@@ -24,11 +26,12 @@ def hall_measurement():
     print(f"Taking Hall measurement at positions:\nI_p={I_p}\nI_n={I_n}\nV_p={V_p}\nV_n={V_n}")
     take_hall_measurement(I_p, I_n, V_p, V_n, B_field_on, B_field_orientation, data_dir_name+hall_file_name.get())
     print("Done taking Hall measurement")
-
+######
 
 r = tk.Tk()
 r.title('Chart Recorder GUI')
 
+### TABS ###
 tab_parent = ttk.Notebook(r)
 tab_chart_recorder = ttk.Frame(tab_parent)
 tab_high_freq_measure = ttk.Frame(tab_parent)
@@ -37,6 +40,7 @@ tab_hall = ttk.Frame(tab_parent)
 tab_parent.add(tab_chart_recorder, text="Chart recorder")
 tab_parent.add(tab_high_freq_measure, text="High frequency voltage measurement")
 tab_parent.add(tab_hall, text="Hall effect")
+# Add new tabs here
 
 tab_parent.pack(expand=1, fill="both")
 
@@ -146,5 +150,7 @@ mag_field_polarity_entry.grid(column=3, columnspan=2, row=5)
 
 hall_submit = tk.Button(tab_hall, text='Take Measurement', height = 2, width = 15, command=hall_measurement)
 hall_submit.grid(column=1, columnspan=4, rowspan=2, sticky='N')
+
+### ADD NEW TABS BELOW ###
 
 r.mainloop()
