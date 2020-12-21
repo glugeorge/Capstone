@@ -30,15 +30,19 @@ def take_high_freq(filename, user_rate, user_time, channel=101):
     to_save = 0
     time = 0
     item_count = 0
+    
+    f = open(filename, "a")
     for item in data_list:
         item_count += 1
         to_save += float(item)
         if item_count == rate_ratio:
             to_save = to_save/item_count
-            save_to_file(filename, time, to_save)
+            save_to_file(f, time, to_save)
             time += 1/float(user_rate)
             item_count = 0
             to_save = 0
+    
+    f.close()
 
 if __name__ == "__main__":
     # Test code
