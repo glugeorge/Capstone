@@ -17,14 +17,14 @@ from hall import *
 # When adding new functionality, add the function callers here
 def plot():
     """Function for real-time plotting. See ``plotter.py``.
-    
+
     """
     refresh_rate = abs(1000/float(refresh_rate_raw.get()) - 95.01)
     live_plot(data_dir_name+chart_file_name.get(), chart_x_name.get(), chart_y_name.get(), scroll_on_off.get(), refresh_rate)
 
 def high_f_measurement():
     """Function for high frequency measurement. See ``high_freq_measurement.py``.
-    
+
     """
     print(f"Taking measurement at {measure_rate.get()} Hz for {measure_time.get()} seconds")
     take_high_freq(data_dir_name+measure_file_name.get(), measure_rate.get(), measure_time.get())
@@ -32,7 +32,7 @@ def high_f_measurement():
 
 def hall_measurement():
     """Function for implementation of the Hall experiment. See ``hall.py``.
-    
+
     """
     I_p, I_n = pos_curr_position.get(), neg_curr_position.get()
     V_p, V_n = pos_v_position.get(), neg_v_position.get()
@@ -93,11 +93,14 @@ refresh_rate_entry.grid(column=2, row=5)
 
 live_plot_submit = tk.Button(tab_chart_recorder, text='Live Plot', height = 2, width = 20, command=plot)
 live_plot_submit.grid(column=1, columnspan=3, rowspan=2, sticky='N')
+tab_chart_recorder.grid_columnconfigure(1, weight=1)
+tab_chart_recorder.grid_columnconfigure(2, weight=1)
+tab_chart_recorder.grid_columnconfigure(3, weight=1)
 
 
 # High frequency measurement tab
 measure_file_label = tk.Label(tab_high_freq_measure, text="Filename (include extension)")
-measure_file_label.grid(column=1, columnspan=3, sticky='S')
+measure_file_label.grid(column=1, columnspan=3)
 measure_file_name = tk.Entry(tab_high_freq_measure)
 measure_file_name.grid(column=1, columnspan=3, row = 1)
 
@@ -109,14 +112,16 @@ measure_rate_entry = tk.Entry(tab_high_freq_measure, textvariable=measure_rate, 
 measure_rate_entry.grid(column=1, row=3)
 
 measure_time_label = tk.Label(tab_high_freq_measure,text="Sample Time (s)", width=20)
-measure_time_label.grid(column=3, row=2)
+measure_time_label.grid(column=2, row=2)
 measure_time = tk.StringVar(tab_high_freq_measure)
 measure_time.set(1) # default value
 measure_time_entry = tk.Entry(tab_high_freq_measure, textvariable=measure_time, width=15)
-measure_time_entry.grid(column=3, row=3)
+measure_time_entry.grid(column=2, row=3)
 
 measure_submit = tk.Button(tab_high_freq_measure, text='Take Measurement', height = 2, width = 20, command=high_f_measurement)
-measure_submit.grid(column=1, columnspan=3, rowspan=2, sticky='N')
+measure_submit.grid(column=1, columnspan=3, rowspan=2)
+tab_high_freq_measure.grid_columnconfigure(1, weight=1)
+tab_high_freq_measure.grid_columnconfigure(2, weight=1)
 
 
 # Hall measurement tab
@@ -165,6 +170,10 @@ mag_field_polarity_entry.grid(column=3, columnspan=2, row=5)
 
 hall_submit = tk.Button(tab_hall, text='Take Measurement', height = 2, width = 15, command=hall_measurement)
 hall_submit.grid(column=1, columnspan=4, rowspan=2, sticky='N')
+tab_hall.grid_columnconfigure(1, weight=1)
+tab_hall.grid_columnconfigure(2, weight=1)
+tab_hall.grid_columnconfigure(3, weight=1)
+tab_hall.grid_columnconfigure(4, weight=1)
 
 ### ADD NEW TABS BELOW ###
 
