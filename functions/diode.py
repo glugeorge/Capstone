@@ -1,4 +1,7 @@
-"""Real-time plotter module.
+"""Voltage varying diode measurement.
+
+Example of modifications to live plotter for a diode measurement where voltage is
+changed by the software. Run from command line.
 
 """
 
@@ -7,21 +10,30 @@ from global_variables import *
 import daq, dc, multimeter
 
 def take_measurement(t_0, device_1, device_2, channel=101):
-    """
-        Taking time, voltage, and current measurement across a diode
+    """Taking time, voltage, and current measurement across a diode.
+    
+     Args:
+        t_0 (float): Anchor time for the start time of the measurement.
+        device_1 (str): DAQ device ID on which to take voltage measurement.
+        device_2 (str): Multimeter device ID on which to take current measurement.
+        channel (str, optional): Channel on which to take a voltage measurement.
+    
+    Returns:
+        A tuple of values of time, voltage, current.
+    
     """
     t = time.time() - t_0
     volt_ascii = daq.take_measurement(device_1, channel)
     voltage = np.mean([float(s) for s in volt_ascii.split(',')])
     current = multimeter.measure_current(device_2, 0.01)
-    return t,voltage,current
+    return t, voltage, current
 
 def initiate_measurement():
     """Function to initialize all devices for live plotting. Device IDs are specified in
     ``global_variables.py``.
     
     Args:
-        None
+        None.
     
     Returns:
         List of initialized devices.
@@ -39,8 +51,6 @@ def setup(filename):
     
     Args:
         filename (str): Name of file with ``.txt`` extension.
-        x_value (str): Measurement type for x-axis.
-        y_value (str): Measurement type for y-axis.
     
     Returns:
         Tuple of data filename and devices.
@@ -48,7 +58,7 @@ def setup(filename):
     """
     # Setting up chart titles
     chart_title = f"Current vs Voltage"
-    data_file = initiate_file(filename, chart_title, "current", "voltage")
+    data_file = initiate_file(filename, chart_title, "time", "voltage,current")
     dc_ps_dev, daq_dev, dmm_dev = initiate_measurement()
 
     return data_file, dc_ps_dev, daq_dev, dmm_dev
@@ -58,13 +68,10 @@ def diode_measurement(filename, refresh_rate=1000): #default is 1 sample per sec
     
     Args:
         filename (str): Name of file with ``.txt`` extension.
-        x_value (str): Measurement type for x-axis.
-        y_value (str): Measurement type for y-axis.
-        scroll (Boolean, optional): Enable scrolling window for live plot.
         refresh_rate (int, optional): Delay between animation frames in milliseconds.
     
     Returns:
-        List of initialized devices.
+        None.
     
     """
     data_file, dc_ps_dev, device_1, device_2 = setup(filename)
@@ -77,28 +84,32 @@ def diode_measurement(filename, refresh_rate=1000): #default is 1 sample per sec
     f = open(data_file, "r")
     lines = f.readlines()
     title = lines[0]
-    x_axis, y_axis = lines[1].split(",")[0], lines[1].split(",")[1]
     f.close()
     voltage_input = 0
     dc.channel_on_off(dc_ps_dev, 1, 1)
     dc.set_voltage_level(dc_ps_dev,1,voltage_input)
+    
+    f = open(data_file, "a")
     def animate(i):
         """Sub-function that updates data for each new frame.
         
         """
-        # Take measurements
-        voltage_input +=0.1
+        # Set power supply voltage level
+        nonlocal voltage_input
+        voltage_input += 0.1
         voltage_input = voltage_input%2
-        dc.set_voltage_level(dc_ps_dev,1,voltage_input)
-        t, voltage, current = take_measurement(t_0, device_1, device_2)
+        dc.set_voltage_level(dc_ps_dev, 1, voltage_input)
+        time.sleep(0.1)
         
-        save_to_file(data_file, time, f"{voltage},{current}") # Save to file
-        y_vals = str(item2).split(",") 
+        # Take measurements
+        t, voltage, current = take_measurement(absolute_time, device_1, device_2)
+        
+        save_to_file(f, t, f"{voltage},{current}") # Save to file
         x.append(voltage)
         y.append(current)
 
         # Plot data
-        x_plot, y_plot, y1_plot = x,y
+        x_plot, y_plot = x,y
         ax.clear()
         ax.plot(x_plot,y_plot)
 
@@ -108,7 +119,9 @@ def diode_measurement(filename, refresh_rate=1000): #default is 1 sample per sec
     
     ani = animation.FuncAnimation(fig, animate, interval=int(refresh_rate))
     plt.show()
+    f.close()
 
 if __name__ == "__main__":
     # Test code
-    live_plot("test.txt", "random_vs_time", scroll=False, refresh_rate=100)
+    filename = input("Filename (include extension): ")
+    diode_measurement(data_dir_name+filename)

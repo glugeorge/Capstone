@@ -94,7 +94,7 @@ def live_plot(filename, x_value, y_value, scroll=True, refresh_rate=1000): #defa
         refresh_rate (int, optional): Delay between animation frames in milliseconds.
     
     Returns:
-        List of initialized devices.
+        None.
     
     """
     data_file, dc_ps_dev, device_1, device_2 = setup(filename, x_value, y_value)
