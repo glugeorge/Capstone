@@ -44,22 +44,22 @@ def initiate_file(filename, title="y(x)", x_axis="x", y_axis="y"):
     f.close()
     return filename
 
-def save_to_file(filename, x, y):
+def save_to_file(f, x, y):
     """Function to save a line of data to ``filename``. This is formatted as the x-value
     followed by any y-values, separated by a comma.
     
     Args:
-        filename (str): Name of file with ``.txt`` extension.
+        f (file object): File object of data file.
         x (float or str): x data value to be saved.
         y (float or str): y data value(s) to be saved.
     
     Returns:
-        Filename.
+        None.
     
     """
-    f = open(filename, "a")
+    #f = open(filename, "a")
     text = str(x) + "," + str(y) + "\n"
     f.write(text)
     # No need to close until possibly the end, slows down code
     #f.close()
-    return filename
+    #return filename

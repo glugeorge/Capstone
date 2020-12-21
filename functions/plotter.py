@@ -110,14 +110,15 @@ def live_plot(filename, x_value, y_value, scroll=True, refresh_rate=1000): #defa
     title = lines[0]
     x_axis, y_axis = lines[1].split(",")[0], lines[1].split(",")[1]
     f.close()
-
+    
+    f = open(data_file, "a")
     def animate(i):
         """Sub-function that updates data for each new frame.
         
         """
         # Take measurements
         item1, item2 = take_measurement(x_value, absolute_time, device_1, 102), take_measurement(y_value, absolute_time, device_2)
-        save_to_file(data_file, item1, item2) # Save to file
+        save_to_file(f, item1, item2) # Save to file
         y_vals = str(item2).split(",") 
         x.append(item1)
         y.append(float(y_vals[0]))
@@ -151,6 +152,7 @@ def live_plot(filename, x_value, y_value, scroll=True, refresh_rate=1000): #defa
 
     ani = animation.FuncAnimation(fig, animate, interval=int(refresh_rate))
     plt.show()
+    f.close()
 
 if __name__ == "__main__":
     # Test code
