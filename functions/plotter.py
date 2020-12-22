@@ -141,11 +141,11 @@ def live_plot(filename, x_value, y_value, scroll=True, refresh_rate=1000): #defa
             if len(y_vals)>1:
                 y1_plot = y1[-20:]
         else:
-            x_plot, y_plot, y1_plot = x,y,y1
+            x_plot, y_plot, y1_plot = x, y, y1
         ax.clear()
-        ax.plot(x_plot,y_plot)
+        ax.plot(x_plot, y_plot)
         if len(y_vals)>1: # Handles case with two voltages vs. time
-            ax.plot(x_plot,y1_plot)
+            ax.plot(x_plot, y1_plot)
         plt.title(title)
         plt.xlabel(x_axis)
         plt.ylabel(y_axis)

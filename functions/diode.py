@@ -24,8 +24,8 @@ def take_measurement(t_0, device_1, device_2, channel=101):
     """
     t = time.time() - t_0
     volt_ascii = daq.take_measurement(device_1, channel)
-    voltage = np.mean([float(s) for s in volt_ascii.split(',')])
     current = multimeter.measure_current(device_2, 0.01)
+    voltage = np.mean([float(s) for s in volt_ascii.split(',')])
     return t, voltage, current
 
 def initiate_measurement():
@@ -57,7 +57,7 @@ def setup(filename):
     
     """
     # Setting up chart titles
-    chart_title = f"Current vs Voltage"
+    chart_title = "Current vs Voltage"
     data_file = initiate_file(filename, chart_title, "time", "voltage,current")
     dc_ps_dev, daq_dev, dmm_dev = initiate_measurement()
 
@@ -85,9 +85,10 @@ def diode_measurement(filename, refresh_rate=1000): #default is 1 sample per sec
     lines = f.readlines()
     title = lines[0]
     f.close()
+    
     voltage_input = 0
     dc.channel_on_off(dc_ps_dev, 1, 1)
-    dc.set_voltage_level(dc_ps_dev,1,voltage_input)
+    dc.set_voltage_level(dc_ps_dev, 1, voltage_input)
     
     f = open(data_file, "a")
     def animate(i):
@@ -109,9 +110,8 @@ def diode_measurement(filename, refresh_rate=1000): #default is 1 sample per sec
         y.append(current)
 
         # Plot data
-        x_plot, y_plot = x,y
         ax.clear()
-        ax.plot(x_plot,y_plot)
+        ax.plot(x, y)
 
         plt.title(title)
         plt.xlabel("Voltage (V)")
@@ -122,6 +122,5 @@ def diode_measurement(filename, refresh_rate=1000): #default is 1 sample per sec
     f.close()
 
 if __name__ == "__main__":
-    # Test code
     filename = input("Filename (include extension): ")
     diode_measurement(data_dir_name+filename)
